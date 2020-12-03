@@ -1,6 +1,6 @@
 const papucastico= require('./lib/papucastico')
 const express = require('express')
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT
 const app = express();
 
 app.get("/", (request, response) => {
