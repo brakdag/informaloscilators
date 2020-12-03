@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Papucástico</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="https://bernii.github.io/gauge.js/dist/gauge.min.js"></script>
+</head>
+<body>	
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h1 class="display-1">Osciladores Informales</h1>
+				<div class="card shadow-lg p-3 mb-5 bg-white rounded" style="width: 18rem;">
+	<h1>Papucástico: GGAL</h1>
+	<h2 id="title">Neutral</h2>
+	<canvas id="papucastico"></canvas>
+</div>
+</div>
+
+</div>
+</div>
+</body>
+
+<script type="text/javascript">
+	var opts = {
+  angle: 0, /// The span of the gauge arc
+  lineWidth: 0.44, // The line thickness
+  pointer: {
+    length: 0.9, // Relative to gauge radius
+    strokeWidth: 0.035 // The thickness
+  },
+  colorStart: '#6FADCF',   // Colors
+  colorStop: '#8FC0DA',    // just experiment with them
+  strokeColor: '#E0E0E0',   // to see which ones work best for you
+  percentColors : [[0.0, "#ff0000" ], [0.50, "#f9c802"], [1.0, "#a9d70b"]],
+  staticLabels: {
+  font: "10px sans-serif",  // Specifies font
+  labels: [0,25,50,75,100],  // Print labels at these values
+  color: "#000000",  // Optional: Label text color
+  fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+},
+};
+var target = document.getElementById('papucastico'); // your canvas element
+var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+
+gauge.maxValue = 100; // set max gauge value
+gauge.setMinValue(0);  // set min value
+//gauge.set(100); // set actual value
+$.ajax({url:"/papu",method:"get",success:function(body){
+	var papu = body*1
+	if (papu>75) $("#title").text("compra fuerte")
+	if (papu<25) $("#title").text("venta fuerte")
+	if ((papu>25) && (papu<45)) $("#title").text("venta")
+	if ((papu<55) && (papu<75)) $("#title").text("compra")
+		
+	gauge.set(papu)
+
+}})
+
+</script>
+</html>
